@@ -11,8 +11,6 @@ class HomeStore extends NotifierStore<Exception, double> {
 
   TextEditingController valueText = TextEditingController();
 
-  final FocusNode focusNode = FocusNode();
-
   bool validate = false;
 
   double real = 0;
@@ -32,14 +30,13 @@ class HomeStore extends NotifierStore<Exception, double> {
 
     CurrencyData data = CurrencyData(dolar: dolar, euro: euro, real: real);
 
-    currencyList.add(data); 
-
-    clean();
+    currencyList.add(data);
     update(real);
+    clean();
   }
 
   clean() {
     valueText.text = '';
-    // update(state);
+    update(state);
   }
 }

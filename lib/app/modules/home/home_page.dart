@@ -17,6 +17,28 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
   String dolar = '';
   String euro = '';
 
+  late FocusNode focus;
+
+  @override
+  void initState() {
+    super.initState();
+
+    focus = FocusNode();
+
+    if (widget.currencyData.dolar > 0) {
+      store.real = widget.currencyData.real;
+      store.dolar = widget.currencyData.dolar;
+      store.euro = widget.currencyData.euro;
+      store.valueText.text = store.real.toString();
+    }
+  }
+
+  @override
+  void dispose() {
+    focus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,14 +68,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       body: ScopedBuilder<HomeStore, Exception, double>(
           store: store,
           onState: (_, real) {
-            if (widget.currencyData.real == real || real == 0) {
-              store.real = widget.currencyData.real;
-              store.dolar = widget.currencyData.dolar;
-              store.euro = widget.currencyData.euro;
-              store.real.toString().replaceAll('.', '') == '0'
-                  ? store.valueText.text = store.real.toString()
-                  : store.valueText.text = '';
-            }
+            focus.requestFocus();
             dolar = store.currency.Dolar.toString().replaceAll('.', ',');
             euro = store.currency.Euro.toString().replaceAll('.', ',');
 
@@ -92,6 +107,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                   child: Column(
                     children: [
                       TextField(
+                        focusNode: focus,
                         keyboardType: TextInputType.number,
                         controller: store.valueText,
                         decoration: InputDecoration(
@@ -106,6 +122,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                         child: ElevatedButton(
                           onPressed: () {
                             store.convert();
+                            focus.requestFocus();
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(12),
