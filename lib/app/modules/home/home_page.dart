@@ -1,11 +1,13 @@
+import 'package:conversor_moedas/app/shared/models/currency_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:share_plus/share_plus.dart';
 import 'home_store.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
-  const HomePage({Key? key, this.title = "Home"}) : super(key: key);
+  final CurrencyData currencyData;
+  const HomePage({Key? key, required this.currencyData}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,15 +26,34 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: IconButton(onPressed: () {
-              // Share.share
-            }, icon: const Icon(Icons.share)),
+            child: IconButton(
+                onPressed: () {
+                  String res = '';
+                  for (var e in store.currencyList) {
+                    var real = e.real.toStringAsFixed(2);
+                    var dolar = e.euro.toStringAsFixed(2);
+                    var euro = e.dolar.toStringAsFixed(2);
+                    res +=
+                        'Reais: R\$$real, Dolar: R\$$dolar, Euro: R\$$euro\n';
+                  }
+
+                  Share.share(res);
+                },
+                icon: const Icon(Icons.share)),
           ),
         ],
       ),
       body: ScopedBuilder<HomeStore, Exception, double>(
           store: store,
-          onState: (_, counter) {
+          onState: (_, real) {
+            if (widget.currencyData.real == real || real == 0) {
+              store.real = widget.currencyData.real;
+              store.dolar = widget.currencyData.dolar;
+              store.euro = widget.currencyData.euro;
+              store.real.toString().replaceAll('.', '') == '0'
+                  ? store.valueText.text = store.real.toString()
+                  : store.valueText.text = '';
+            }
             dolar = store.currency.Dolar.toString().replaceAll('.', ',');
             euro = store.currency.Euro.toString().replaceAll('.', ',');
 
@@ -113,7 +134,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Dolar: R\$${store.dolar.toStringAsFixed(2)}',
+                          'Dolar: \$${store.dolar.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -122,7 +143,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          'Euro: R\$${store.euro.toStringAsFixed(2)}',
+                          'Euro: €${store.euro.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,

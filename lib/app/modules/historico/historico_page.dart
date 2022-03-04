@@ -27,8 +27,13 @@ class HistoricoPage extends StatelessWidget {
           child: ListView.builder(
             itemCount: currencyList.length,
             itemBuilder: (context, i) {
-              return ConversaoWidget(
-                currencyData: currencyList[i],
+              return GestureDetector(
+                onTap: () {
+                  Modular.to.navigate('/', arguments: currencyList[i]);
+                },
+                child: ConversaoWidget(
+                  currencyData: currencyList[i],
+                ),
               );
             },
           ),

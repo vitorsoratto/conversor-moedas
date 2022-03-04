@@ -10,12 +10,17 @@ class HomeModule extends Module {
   @override
   final List<Bind> binds = [
     // Bind.lazySingleton((i) => HistoricoStore(i(), i(), i())),
+    // Bind.instance<double>(0),
     Bind.lazySingleton((i) => HomeStore()),
   ];
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute, child: (_, args) => HomePage()),
+    ChildRoute(Modular.initialRoute,
+        child: (_, args) => HomePage(
+              currencyData:
+                  args.data ?? CurrencyData(dolar: 0, euro: 0, real: 0),
+            )),
     ChildRoute('/historico',
         child: (_, args) => HistoricoPage(
               currencyList: args.data,

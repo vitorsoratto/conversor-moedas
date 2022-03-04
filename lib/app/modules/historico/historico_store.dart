@@ -1,15 +1,9 @@
+import 'package:conversor_moedas/app/modules/home/home_store.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 
 class HistoricoStore extends NotifierStore<Exception, int> {
-  HistoricoStore(this.real, this.dolar, this.euro) : super(0);
+  HistoricoStore() : super(0);
 
-  final double real;
-  final double dolar;
-  final double euro;
-
-  teste() {
-    print(real);
-    print(dolar);
-    print(euro);
-  }
+  // HomeStore homeStore = Modular.get<HomeStore>();
 }

@@ -36,10 +36,10 @@ class ConversaoWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        'Dolar: R\$${dolar.toStringAsFixed(2).replaceAll('.', ',')}'),
+                        'Dolar: \$${dolar.toStringAsFixed(2).replaceAll('.', ',')}'),
                     const SizedBox(height: 5),
                     Text(
-                        'Euro: R\$${euro.toStringAsFixed(2).replaceAll('.', ',')}'),
+                        'Euro: €${euro.toStringAsFixed(2).replaceAll('.', ',')}'),
                   ],
                 ),
               )

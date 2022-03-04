@@ -32,13 +32,14 @@ class HomeStore extends NotifierStore<Exception, double> {
 
     CurrencyData data = CurrencyData(dolar: dolar, euro: euro, real: real);
 
-    currencyList.add(data);
+    currencyList.add(data); 
 
-    update(real);
     clean();
+    update(real);
   }
 
   clean() {
     valueText.text = '';
+    // update(state);
   }
 }
